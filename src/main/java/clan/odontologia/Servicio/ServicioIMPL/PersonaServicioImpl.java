@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PersonaServicionImpl  implements PersonaServicio {
+public class PersonaServicioImpl implements PersonaServicio {
 private final PersonaRepositorio repositorio;
 
     // GUARDAR
