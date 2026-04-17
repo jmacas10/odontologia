@@ -30,6 +30,6 @@ public class Persona {
     private LocalDateTime fechaRegistro;
     private LocalDateTime fechaModificacion;
 
-    private String estado; // ACTIVO / INACTIVO
-
+    @Enumerated(EnumType.STRING) // 🔥 IMPORTANTE
+    private Estado estado;
 }
