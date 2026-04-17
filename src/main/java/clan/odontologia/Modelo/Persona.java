@@ -14,7 +14,7 @@ public class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPersona;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String codigoPersona; // cpersona
 
     private String nombres;
@@ -22,14 +22,15 @@ public class Persona {
 
     @Column(unique = true)
     private String identificacion;
-
-    private String tipoIdentificacion;
+     @Enumerated(EnumType.STRING)
+     @Column(nullable = false)
+    private TipoIdentificacion  tipoIdentificacion;
 
     private LocalDate fechaNacimiento;
 
     private LocalDateTime fechaRegistro;
     private LocalDateTime fechaModificacion;
 
-    @Enumerated(EnumType.STRING) // 🔥 IMPORTANTE
+    @Enumerated(EnumType.STRING) // IMPORTANTE
     private Estado estado;
 }

@@ -1,11 +1,15 @@
-package clan.odontologia.Servicio.ServicioImpl;
+package clan.odontologia.Servicio.ServicioIMPL;
 
 import clan.odontologia.Dto.request.PersonaRequestDTO;
 import clan.odontologia.Dto.response.PersonaResponseDTO;
+import clan.odontologia.Modelo.Estado;
+import clan.odontologia.Modelo.TipoIdentificacion;
 import clan.odontologia.Servicio.PersonaServicio;
 
 import clan.odontologia.Modelo.Persona;
 import clan.odontologia.Repositorio.PersonaRepositorio;
+import clan.odontologia.Servicio.SecuenciaServicio;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +21,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PersonaServicioImpl implements PersonaServicio {
 private final PersonaRepositorio repositorio;
-
+private final SecuenciaServicio secuenciaServicio;
     // GUARDAR
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public PersonaResponseDTO guardar(PersonaRequestDTO request) {
 
         //  Request → Entidad
@@ -28,14 +33,20 @@ private final PersonaRepositorio repositorio;
         persona.setNombres(request.getNombres());
         persona.setApellidos(request.getApellidos());
         persona.setIdentificacion(request.getIdentificacion());
-        persona.setTipoIdentificacion(request.getTipoIdentificacion());
+        //persona.setTipoIdentificacion(request.getTipoIdentificacion());
+        persona.setTipoIdentificacion(TipoIdentificacion.valueOf(request.getTipoIdentificacion().toUpperCase()));
         persona.setFechaNacimiento(request.getFechaNacimiento());
-        persona.setEstado(request.getEstado());
+        persona.setEstado(Estado.ACTIVO);
 
         persona.setFechaRegistro(LocalDateTime.now());
 
-        // Guardar en BD
-        Persona guardado = repositorio.save(persona);
+       // generar código
+    persona.setCodigoPersona(
+        secuenciaServicio.generarCodigo("PERSONA", "CP")
+    );
+
+    Persona guardado = repositorio.save(persona);
+    guardado = repositorio.save(guardado);
 
         //  Entidad → Response
         return convertirAResponse(guardado);
@@ -73,13 +84,19 @@ private final PersonaRepositorio repositorio;
 
         // Actualizar datos
        // persona.setCodigoPersona(request.getCodigoPersona()); no se actualiza el codigo es identificador unico
+       if(request.getNombres()!=null){
         persona.setNombres(request.getNombres());
-        persona.setApellidos(request.getApellidos());
+       }
+        if(request.getApellidos()!=null) {
+            persona.setApellidos(request.getApellidos());
+        }
         //ersona.setIdentificacion(request.getIdentificacion()); tampoco se actualiza la identificacion es identificador unico
-        persona.setTipoIdentificacion(request.getTipoIdentificacion());
+       persona.setTipoIdentificacion(
+    TipoIdentificacion.valueOf(request.getTipoIdentificacion().toUpperCase()));
         persona.setFechaNacimiento(request.getFechaNacimiento());
-        persona.setEstado(request.getEstado());
-
+        if(request.getEstado()!=null) {
+            persona.setEstado(request.getEstado());
+        }
         persona.setFechaModificacion(LocalDateTime.now());
 
         //  Guardar
@@ -99,7 +116,7 @@ private final PersonaRepositorio repositorio;
         dto.setNombres(p.getNombres());
         dto.setApellidos(p.getApellidos());
         dto.setIdentificacion(p.getIdentificacion());
-        dto.setTipoIdentificacion(p.getTipoIdentificacion());
+        dto.setTipoIdentificacion(p.getTipoIdentificacion().name());
         dto.setFechaNacimiento(p.getFechaNacimiento());
         dto.setEstado(p.getEstado());
 

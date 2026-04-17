@@ -9,4 +9,5 @@ public interface PersonaRepositorio extends JpaRepository<Persona, Long> {
   Optional<Persona> findByCodigoPersona(String codigoPersona);
 
   Optional<Persona> findByIdentificacion(String identificacion);
+  Optional<Persona> findByIdPersona(Long idPersona);
 }
