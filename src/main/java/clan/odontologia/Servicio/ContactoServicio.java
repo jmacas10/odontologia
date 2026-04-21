@@ -14,7 +14,7 @@ public interface ContactoServicio {
     ContactoResponseDTO buscarPorId(Long id);
 
     // EDITAR
-    ContactoResponseDTO editar(Long id, ContactoRequestDTO request);
+    ContactoResponseDTO editar(Long id, ContactoResponseDTO request);
 
     // ELIMINAR
     void eliminar(Long id);

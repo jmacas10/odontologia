@@ -1,0 +1,15 @@
+// personas
+{
+  "nombres": "Johnny",
+  "apellidos": "Macas",
+  "identificacion": "0106822570",
+  "tipoIdentificacion": "C",
+  "fechaNacimiento": "1192-02-10"
+}
+// contactos
+{
+  "personaId": 1,
+  "telefono": "0989335105",
+  "email": "jalvinjohnn@email.com",
+  "direccion": "san joaquin barrio juan pablo "
+}
