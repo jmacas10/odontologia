@@ -1,15 +1,11 @@
 package clan.odontologia.Servicio.ServicioIMPL;
 
-import clan.odontologia.DTO.request.ContactoRequestDTO;
-import clan.odontologia.DTO.response.ContactoResponseDTO;
 import clan.odontologia.Dto.response.OdontologoResponseDTO;
 import clan.odontologia.Modelo.Contacto;
 import clan.odontologia.Modelo.Odontologo;
 import clan.odontologia.Modelo.Persona;
-import clan.odontologia.Repositorio.ContactoRepositorio;
 import clan.odontologia.Repositorio.OdontologoRepositorio;
 import clan.odontologia.Repositorio.PersonaRepositorio;
-import clan.odontologia.Servicio.ContactoServicio;
 import clan.odontologia.Servicio.OdontologoServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,28 +19,24 @@ public class OdontologoServicioImpl implements OdontologoServicio {
 
     private final OdontologoRepositorio  odontologoRepositorio;
     private final PersonaRepositorio personaRepositorio;
-   @Override
+    // GUARDAR
+    @Override
     public OdontologoResponseDTO guardar(OdontologoResponseDTO request) {
 
-        // 1. Buscar persona por código
-       Persona persona=personaRepositorio.findByIdPersona(request.getPersonaId())
-               .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
+        Persona persona = personaRepositorio.findByIdPersona(request.getPersonaId())
+                .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
 
-        // 2. Crear entidad Odontologo
         Odontologo odontologo = new Odontologo();
-       odontologo.setPersona(persona);
-       odontologo.setEspecialidad(request.getEspecialidad());
+        odontologo.setPersona(persona);
+        odontologo.setEspecialidad(request.getEspecialidad());
+        odontologo.setRegistroProfesional(request.getRegistroProfesional());
 
-
-        // 3. Guardar
         Odontologo guardado = odontologoRepositorio.save(odontologo);
 
         return convertirAResponse(guardado);
     }
 
-
     // LISTAR
-
     @Override
     public List<OdontologoResponseDTO> listar() {
         return odontologoRepositorio.findAll()
@@ -56,7 +48,7 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     // BUSCAR POR ID
     @Override
     public OdontologoResponseDTO buscarPorId(Long id) {
-        Odontologo odontologo = odontologoRepositorio.findByidOdontologo(id)
+        Odontologo odontologo = odontologoRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Odontologo no encontrado"));
 
         return convertirAResponse(odontologo);
@@ -66,21 +58,21 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     @Override
     public OdontologoResponseDTO editar(Long id, OdontologoResponseDTO request) {
 
-        Contacto contacto = odontologoRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contacto no encontrado"));
+        Odontologo odontologo = odontologoRepositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Odontologo no encontrado"));
 
         Persona persona = personaRepositorio.findByIdPersona(request.getPersonaId())
                 .orElseThrow(() -> new RuntimeException("Persona no encontrada"));
 
-        contacto.setPersona(persona);
-        contacto.setTelefono(request.getTelefono());
-        contacto.setEmail(request.getEmail());
-        contacto.setDireccion(request.getDireccion());
+        odontologo.setPersona(persona);
+        odontologo.setEspecialidad(request.getEspecialidad());
+        odontologo.setRegistroProfesional(request.getRegistroProfesional());
 
-        Contacto actualizado = odontologoRepositorio.save(contacto);
+        Odontologo actualizado = odontologoRepositorio.save(odontologo);
 
         return convertirAResponse(actualizado);
     }
+
     // ELIMINAR
     @Override
     public void eliminar(Long id) {
@@ -88,16 +80,16 @@ public class OdontologoServicioImpl implements OdontologoServicio {
     }
 
     // MAPPER ENTITY -> DTO
-    private OdontologoResponseDTO  convertirAResponse(Odontologo o) {
+    private OdontologoResponseDTO convertirAResponse(Odontologo o) {
 
         OdontologoResponseDTO dto = new OdontologoResponseDTO();
 
         dto.setIdOdontologo(o.getIdOdontologo());
         dto.setEspecialidad(o.getEspecialidad());
+        dto.setRegistroProfesional(o.getRegistroProfesional());
 
-        // relación
         dto.setPersonaId(
-                c.getPersona() != null ? c.getPersona().getIdPersona() : null
+                o.getPersona() != null ? o.getPersona().getIdPersona() : null
         );
 
         return dto;

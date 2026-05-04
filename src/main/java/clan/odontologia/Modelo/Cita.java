@@ -24,10 +24,8 @@ public class Cita {
     private LocalTime hora;
 
     private String motivo;
-
-    private String estado;
-    // AGENDADA, CANCELADA, REAGENDADA, ATENDIDA
-
+    @Enumerated(EnumType.STRING)
+    private EstadoCita estado;
     private LocalDate fechaRegistro;
 
 

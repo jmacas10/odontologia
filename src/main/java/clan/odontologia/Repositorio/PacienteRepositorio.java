@@ -10,4 +10,6 @@ public interface PacienteRepositorio extends JpaRepository<Paciente, Long> {
   Optional<Paciente> findByidPaciente(Long idPaciente);
 
   Optional<Paciente> findByPersonaIdPersona(Long idPersona);
+
+  Optional<Paciente> findByPersonaIdentificacion(String indentificacion);
 }

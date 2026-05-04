@@ -13,3 +13,16 @@
   "email": "jalvinjohnn@email.com",
   "direccion": "san joaquin barrio juan pablo "
 }
+//////// odontologos
+{
+  "personaId": 1,
+  "especialidad": "odontologia general",
+  "registroProfesional": "1234567890"
+}
+//////// pacientes
+    {
+      "personaId": 1,
+      "alergias": "no",
+      "enfermedades": "no",
+        "observaciones": "ninguna"
+    }

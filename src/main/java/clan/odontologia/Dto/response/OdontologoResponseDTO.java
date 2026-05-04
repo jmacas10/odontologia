@@ -9,6 +9,6 @@ public class OdontologoResponseDTO {
     private Long idOdontologo;
     private Long personaId;
     private String especialidad;
-
+        private String registroProfesional;
 
 }

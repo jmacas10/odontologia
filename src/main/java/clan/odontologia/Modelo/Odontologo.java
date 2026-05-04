@@ -15,8 +15,8 @@ public class Odontologo {
     @OneToOne
     @JoinColumn(name = "persona_id")
     private Persona persona;
-
    private String especialidad;
+    private String registroProfesional;
 
 
 }

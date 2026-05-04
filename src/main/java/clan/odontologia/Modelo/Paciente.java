@@ -15,10 +15,15 @@ public class Paciente {
     @OneToOne
     @JoinColumn(name = "persona_id")
     private Persona persona;
+    private String alergias;
+    private String enfermedades;
+    private String observaciones;
+    private LocalDateTime fechaRegistro;
+    @PrePersist
+    public void prePersist() {
+        this.fechaRegistro = LocalDateTime.now();
+    }
 
-    private int estado;
-
-    private LocalDateTime fechaActivacion;
 
 
 

@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 @Data
 public class PacienteRequestDTO {
     private Long personaId;
-    private int estado;
-    private LocalDateTime fechaActivacion;
+    private String alergias;
+    private String enfermedades;
+    private String observaciones;
+    private LocalDateTime fechaRegistro;
+
 
 
 }

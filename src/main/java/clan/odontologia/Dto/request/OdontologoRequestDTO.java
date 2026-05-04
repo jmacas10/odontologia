@@ -7,6 +7,7 @@ import lombok.Data;
 public class OdontologoRequestDTO {
     private Long personaId;
     private String especialidad;
+        private String registroProfesional;
 
 
 }
